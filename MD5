@@ -1,4 +1,4 @@
-24dbea643e8fda6183707263cea58829 *DESCRIPTION
+6b5882cbfbb2325210d3426c632a99fe *DESCRIPTION
 e8642a6a438de5ab92124ed09951d724 *NAMESPACE
 942fedf9273369b5f6a0894d77ceeab7 *R/0.generics.R
 51decdcaed2c59d4373901ce414be955 *R/1.ph.R
@@ -95,7 +95,7 @@ ece5c08df233ad37df3f38acb7b8f413 *src/RcppExports.cpp
 825e97faee558891986e5c86cb9c4cab *src/Simulation.cpp
 b5093aeae15a95a4e52bfec081e899ce *src/distributions.cpp
 8bfe12562eac2d704e5c4cc63df7b0f3 *src/distributions.h
-f272648a773a367ee6ac2cdb4aa4f05d *src/matrix_functions.cpp
+48d1058136a9aad4debc1cb93f87fc37 *src/matrix_functions.cpp
 2462e7299fa49c051ea988f3c99ee10f *src/matrix_functions.h
 a3098a869937414366988d190578dc88 *src/operations.cpp
 7dc9ac02f5ece46671e6fabadfc96ff3 *src/structure_parameters.cpp

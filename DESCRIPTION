@@ -1,8 +1,8 @@
 Package: matrixdist
 Type: Package
 Title: Statistics for Matrix Distributions
-Version: 1.0
-Date: 2020-12-12
+Version: 1.0.1
+Date: 2021-02-15
 Authors@R: c(person("Martin", "Bladt", email = "martinbladt@gmail.com", role = c("aut", "cre")),
               person("Jorge", "Yslas", email = "jorge.yslas1@gmail.com",
               role = "aut")
@@ -16,7 +16,7 @@ Description: Tools for homogeneous and in-homogeneous phase-type distributions.
     Olsson, M. (1996) <https://www.jstor.org/stable/4616419>.
     Albrecher, H., & Bladt, M. (2019) <doi:10.1017/jpr.2019.60>
     Albrecher, H., Bladt, M., & Yslas, J. (2020) <doi:10.1111/sjos.12505>
-    Bladt, M., & Yslas, J. (2020) <arXiv:abs/2011.03219>.
+    Bladt, M., & Yslas, J. (2020) <arXiv:2011.03219>.
 Depends: R (>= 3.1.0)
 License: GPL-3
 Imports: Rcpp, methods
@@ -25,8 +25,8 @@ SystemRequirements: C++11
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 NeedsCompilation: yes
-Packaged: 2021-01-07 01:26:20 UTC; martinbladt
+Packaged: 2021-02-15 17:19:32 UTC; martinbladt
 Author: Martin Bladt [aut, cre],
   Jorge Yslas [aut]
 Repository: CRAN
-Date/Publication: 2021-01-08 13:40:02 UTC
+Date/Publication: 2021-02-15 17:40:02 UTC
