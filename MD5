@@ -1,7 +1,7 @@
-6b5882cbfbb2325210d3426c632a99fe *DESCRIPTION
+9d01fe7f38ea0fe9c2f26b65e042eab2 *DESCRIPTION
 e8642a6a438de5ab92124ed09951d724 *NAMESPACE
 942fedf9273369b5f6a0894d77ceeab7 *R/0.generics.R
-51decdcaed2c59d4373901ce414be955 *R/1.ph.R
+3581d139c4a3162f5c37465f39527292 *R/1.ph.R
 79114f1dcbe48f275e8f392df8ca90bd *R/2.iph.R
 f0e3c481f92684ab5d51af213349c1a2 *R/RcppExports.R
 a5472cd9c40affb90bd6ad43eec6d16f *R/matrixdist-package.R
@@ -63,7 +63,7 @@ d2b40643528791d4272a1cb9513e7c6e *man/mloglogisticcdf.Rd
 3dcac2014cf07a80a543a1d7bd451abe *man/mloglogisticden.Rd
 8e545ef7b09d3389f7f8bf39adf1bd28 *man/mlognormalcdf.Rd
 c83699c86f110c3a16d7bec003635556 *man/mlognormalden.Rd
-ed24350a0274059e6a4f56671e6f2329 *man/moment-ph-method.Rd
+4941316e363217d31adb7c81d23e0bf2 *man/moment-ph-method.Rd
 8797645cac030b25cba3b8ea59abe5a4 *man/moment.Rd
 05b15d4ab92d9fea215744a2c5171277 *man/mparetocdf.Rd
 96342faa417f1232d6bf6c5c01074024 *man/mparetoden.Rd

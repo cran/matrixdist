@@ -1,8 +1,8 @@
 Package: matrixdist
 Type: Package
 Title: Statistics for Matrix Distributions
-Version: 1.0.1
-Date: 2021-02-15
+Version: 1.0.2
+Date: 2021-02-26
 Authors@R: c(person("Martin", "Bladt", email = "martinbladt@gmail.com", role = c("aut", "cre")),
               person("Jorge", "Yslas", email = "jorge.yslas1@gmail.com",
               role = "aut")
@@ -25,8 +25,8 @@ SystemRequirements: C++11
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 NeedsCompilation: yes
-Packaged: 2021-02-15 17:19:32 UTC; martinbladt
+Packaged: 2021-02-26 08:39:46 UTC; martinbladt
 Author: Martin Bladt [aut, cre],
   Jorge Yslas [aut]
 Repository: CRAN
-Date/Publication: 2021-02-15 17:40:02 UTC
+Date/Publication: 2021-02-26 09:50:08 UTC
