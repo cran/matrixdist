@@ -75,10 +75,41 @@ iph <- function(ph = NULL, gfun = NULL, gfun_pars = NULL, alpha = NULL, S = NULL
   f6 <- function(beta, t, w) reversTransformData(t, w, beta)
   nb <- which(gfun == c("weibull", "pareto", "lognormal", "loglogistic", "gompertz", "gev"))
   ginv <- base::eval(parse(text = paste("f", nb, sep = "")))
+  
+  f1 <- function(beta, t) t^{beta} * log(t)
+  f2 <- function(beta, t) -t/(beta * t + beta^2)
+  f3 <- function(beta, t) log(t + 1)^{beta} * log(log(t + 1))
+  f4 <- NA
+  f5 <- function(beta, t) exp(t * beta) * (t * beta - 1)  / beta^2
+  f6 <- NA
+  nb <- which(gfun == c("weibull", "pareto", "lognormal", "loglogistic", "gompertz", "gev"))
+  ginv_prime <- base::eval(parse(text = paste("f", nb, sep = "")))
+
+  f1 <- function(beta, t) beta * t^{beta - 1}
+  f2 <- function(beta, t) (t + beta)^{-1}
+  f3 <- function(beta, t) beta * log(t + 1)^{beta - 1}/(t + 1)
+  f4 <- NA
+  f5 <- function(beta, t) exp(t * beta)
+  f6 <- NA
+  nb <- which(gfun == c("weibull", "pareto", "lognormal", "loglogistic", "gompertz", "gev"))
+  lambda <- base::eval(parse(text = paste("f", nb, sep = "")))
+
+  f1 <- function(beta, t) t^{beta - 1} + beta * t^{beta - 1} * log(t)
+  f2 <- function(beta, t) -(t + beta)^{-2}
+  f3 <- function(beta, t) log(t + 1)^{beta - 1}/(t + 1) + beta * log(t + 1)^{beta - 1} * log(log(t + 1))/(t + 1)
+  f4 <- NA
+  f5 <- function(beta, t) t * exp(t * beta)
+  f6 <- NA
+  nb <- which(gfun == c("weibull", "pareto", "lognormal", "loglogistic", "gompertz", "gev"))
+  lambda_prime <- base::eval(parse(text = paste("f", nb, sep = "")))
+
+  name <- if(is(ph, "iph")){ph@name}else{paste("inhomogeneous ", ph@name, sep = "")}
+  
   methods::new("iph",
-    name = paste("inhomogeneous ", ph@name, sep = ""),
+    name = name,
     pars = ph@pars,
-    gfun = list(name = gfun, pars = gfun_pars, inverse = ginv),
+    gfun = list(name = gfun, pars = gfun_pars, inverse = ginv,
+                inverse_prime = ginv_prime, intensity = lambda, intensity_prime = lambda_prime),
     scale = scale,
     fit = ph@fit
   )
@@ -180,14 +211,14 @@ setMethod("sim", c(x = "iph"), function(x, n = 1000) {
 #' @examples
 #' obj <- iph(ph(structure = "general"), gfun = "weibull", gfun_pars = 2)
 #' dens(obj, c(1, 2, 3))
-setMethod("dens", c(x = "iph"), function(x, y = seq(0, quan(x, .95)$quantile, length.out = 10)) {
+setMethod("dens", c(x = "iph"), function(x, y) {
   fn <- base::eval(parse(text = paste("m", x@gfun$name, "den", sep = "")))
   scale <- x@scale
   y_inf <- (y == Inf)
   dens <- y
   dens[!y_inf] <- fn(y / scale, x@pars$alpha, x@pars$S, x@gfun$pars) / scale
   dens[y_inf] <- 0
-  return(list(y = y, dens = dens))
+  return(dens)
 })
 
 #' Distribution Method for inhomogeneous phase type distributions
@@ -203,7 +234,7 @@ setMethod("dens", c(x = "iph"), function(x, y = seq(0, quan(x, .95)$quantile, le
 #' obj <- iph(ph(structure = "general"), gfun = "weibull", gfun_pars = 2)
 #' cdf(obj, c(1, 2, 3))
 setMethod("cdf", c(x = "iph"), function(x,
-                                        q = seq(0, quan(x, .95)$quantile, length.out = 10),
+                                        q,
                                         lower.tail = TRUE) {
   fn <- base::eval(parse(text = paste("m", x@gfun$name, "cdf", sep = "")))
   scale <- x@scale
@@ -211,7 +242,7 @@ setMethod("cdf", c(x = "iph"), function(x,
   cdf <- q
   cdf[!q_inf] <- fn(q[!q_inf] / scale, x@pars$alpha, x@pars$S, x@gfun$pars, lower.tail)
   cdf[q_inf] <- as.numeric(1 * lower.tail)
-  return(list(q = q, cdf = cdf))
+  return(cdf)
 })
 
 

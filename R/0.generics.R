@@ -127,3 +127,57 @@ setGeneric("quan", function(x, ...) {
 setGeneric("fit", function(x, y, ...) {
   standardGeneric("fit")
 })
+#' New Generic for Regression with Matrix Distributions
+#'
+#' Methods are available for objects of class \linkS4class{ph}
+#'
+#' @param x an object of the model class.
+#' @param y a vector of data.
+#' @param ... further parameters to be passed on
+#'
+#' @return An object of the fitted model class.
+#' @export
+#'
+#'
+setGeneric("reg", function(x, y, ...) {
+  standardGeneric("reg")
+})
+#' New Generic for Evaluating Survival Matrix Distributions
+#'
+#' Methods are available for objects of class \linkS4class{sph}
+#'
+#' @param x an object of the model class.
+#' @param subject a vector of data.
+#' @param ... further parameters to be passed on
+#'
+#' @export
+#'
+setGeneric("evaluate", function(x, subject, ...) {
+  standardGeneric("evaluate")
+})
+#' New Generic for doing a likelihood ratio test between two Matrix Distribution models
+#'
+#' Methods are available for objects of class \linkS4class{ph}
+#'
+#' @param x,y objects of the model class.
+#' @param ... further parameters to be passed on
+#'
+#' @return a likelihood ratio test result.
+#' @export
+#'
+#'
+setGeneric("LRT", function(x, y, ...) {
+  standardGeneric("LRT")
+})
+#' New Generic for obtaining the Fisher Information of Survival Matrix Distributions
+#'
+#' Methods are available for objects of class \linkS4class{sph}
+#'
+#' @param x an object of the model class.
+#' @param ... further parameters to be passed on
+#'
+#' @export
+#'
+setGeneric("Fisher", function(x, ...) {
+  standardGeneric("Fisher")
+})

@@ -4,15 +4,15 @@
 \alias{matrix_product}
 \title{Product of two matrices}
 \usage{
-matrix_product(a, b)
+matrix_product(A1, A2)
 }
 \arguments{
-\item{a}{matrix}
+\item{A1}{matrix}
 
-\item{b}{matrix}
+\item{A2}{matrix}
 }
 \value{
-Computes c = a * b
+Computes C = A1 * A2
 }
 \description{
 Product of two matrices

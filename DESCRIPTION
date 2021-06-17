@@ -1,8 +1,8 @@
 Package: matrixdist
 Type: Package
 Title: Statistics for Matrix Distributions
-Version: 1.0.2
-Date: 2021-02-26
+Version: 1.1.0
+Date: 2021-06-17
 Authors@R: c(person("Martin", "Bladt", email = "martinbladt@gmail.com", role = c("aut", "cre")),
               person("Jorge", "Yslas", email = "jorge.yslas1@gmail.com",
               role = "aut")
@@ -20,13 +20,13 @@ Description: Tools for homogeneous and in-homogeneous phase-type distributions.
 Depends: R (>= 3.1.0)
 License: GPL-3
 Imports: Rcpp, methods
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppArmadillo
 SystemRequirements: C++11
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 NeedsCompilation: yes
-Packaged: 2021-02-26 08:39:46 UTC; martinbladt
+Packaged: 2021-06-17 16:35:14 UTC; martinbladt
 Author: Martin Bladt [aut, cre],
   Jorge Yslas [aut]
 Repository: CRAN
-Date/Publication: 2021-02-26 09:50:08 UTC
+Date/Publication: 2021-06-17 16:50:02 UTC

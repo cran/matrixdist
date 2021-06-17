@@ -1,4 +1,5 @@
 #include "matrix_functions.h"
+#include "exp_arm.h"
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -10,7 +11,7 @@ using namespace Rcpp;
 //' @return Computes c = a * b
 //' 
 // [[Rcpp::export]]
-NumericMatrix matrix_product(NumericMatrix a, NumericMatrix b) {
+NumericMatrix matrix_product_slow(NumericMatrix a, NumericMatrix b) {
   
   const size_t rows = a.nrow(), cols = b.ncol(), n = a.ncol();
   
@@ -170,7 +171,7 @@ NumericMatrix solve_linear_system(NumericMatrix A1, const NumericMatrix & B) {
 //' @param A a matrix
 //' 
 // [[Rcpp::export]]
-NumericMatrix matrix_inverse(NumericMatrix A) {
+NumericMatrix matrix_inverse_slow(NumericMatrix A) {
   return solve_linear_system(A, NumericMatrix::diag(A.nrow(), 1.0));
 }
 
@@ -181,7 +182,7 @@ NumericMatrix matrix_inverse(NumericMatrix A) {
 //' @param A a matrix
 //' 
 // [[Rcpp::export]]
-NumericMatrix matrix_exponential(const NumericMatrix & A) {
+NumericMatrix matrix_exponential_slow(const NumericMatrix & A) {
   
   const int q{6};
   

@@ -11,10 +11,13 @@
   rcen = numeric(0),
   rcenweight = numeric(0),
   stepsEM = 1000,
+  methods = c("RK", "RK"),
   rkstep = NA,
+  uni_epsilon = NA,
   maxit = 100,
   reltol = 1e-08,
-  every = 100
+  every = 100,
+  plot = FALSE
 )
 }
 \arguments{
@@ -30,13 +33,19 @@
 
 \item{stepsEM}{number of EM steps to be performed.}
 
+\item{methods}{methods to use for matrix exponential calculation: RM, UNI or PADE}
+
 \item{rkstep}{Runge-Kutta step size (optional)}
+
+\item{uni_epsilon}{epsilon parameter for uniformization method}
 
 \item{maxit}{maximum number of iterations when optimizing g function.}
 
 \item{reltol}{relative tolerance when optimizing g function.}
 
 \item{every}{number of iterations between likelihood display updates.}
+
+\item{plot}{logical indicating whether to plot the fit at each iteration.}
 }
 \value{
 An object of class \linkS4class{ph}.

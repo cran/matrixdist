@@ -4,10 +4,10 @@
 \alias{matrix_exponential}
 \title{Matrix exponential algorithm}
 \usage{
-matrix_exponential(A)
+matrix_exponential(Ainput)
 }
 \arguments{
-\item{A}{a matrix}
+\item{Ainput}{a matrix}
 }
 \description{
 MATLAB's built-in algorithm - Pade approximation
