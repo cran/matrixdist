@@ -1,4 +1,4 @@
-7013824189da14c7f12afdaa66e551ae *DESCRIPTION
+3a009dc531ae7f5318a2e5dc6605d4e3 *DESCRIPTION
 292bbf3f907b33b848cea2da73da3f1d *NAMESPACE
 98a9ef661faf048dbf6a2e9e16a01a2d *R/0.generics.R
 5ed3acf7b82f85cff93e6adb48bbae0f *R/1.ph.R
@@ -146,7 +146,7 @@ c636aef338a83d8d6ed828285f267bb0 *man/solve_linear_system.Rd
 116fc43f1c163f1485d1cc49cc6280bb *man/vectorOfMatrices_arma.Rd
 a7702daaa6fa245ef1ef190a33552b42 *man/vectorOfMatrices_arma2.Rd
 617f1dde20ac36a37a905eb062400b00 *src/EM_LL.cpp
-a7ac29476ce95ec51d30f6e14f34c452 *src/EM_LL_PADE.cpp
+3223b693388b8c921c625072e01cbb68 *src/EM_LL_PADE.cpp
 74067f6a2597d48ad657b78516ab1969 *src/EM_LL_UNI.cpp
 61059660eb073d93e00e8ee054237071 *src/Makevars
 61059660eb073d93e00e8ee054237071 *src/Makevars.win
