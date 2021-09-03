@@ -309,13 +309,11 @@ setMethod(
     if(!all(c(y, rcen) > 0)) stop("data should be positive")
     if(!all(c(weight, rcenweight) >= 0)) stop("weights should be non-negative")
     is_iph <- methods::is(x, "iph")
-    if (!is_iph) {
-      LL <- eval(parse(text = paste("logLikelihoodPH_", methods[2], sep = "")))
-    }else if (is_iph) {
+    if (is_iph) {
       par_g <- x@gfun$pars
-      inv_g <- x@gfun$inverse
-      LL <- eval(parse(text = paste("logLikelihoodM", x@gfun$name, "_", methods[2], sep = "")))
-    }
+      inv_g <- x@gfun$inverse}
+    LL <- if(is_iph){eval(parse(text = paste("logLikelihoodM", x@gfun$name, "_", methods[2], sep = "")))
+      }else{eval(parse(text = paste("logLikelihoodPH_", methods[2], sep = "")))}
     A <- data_aggregation(y, weight)
     y <- A$un_obs
     weight <- A$weights

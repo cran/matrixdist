@@ -1,7 +1,7 @@
-3a009dc531ae7f5318a2e5dc6605d4e3 *DESCRIPTION
+f778f9fa5f945d7c43f5d345d7213f01 *DESCRIPTION
 292bbf3f907b33b848cea2da73da3f1d *NAMESPACE
 98a9ef661faf048dbf6a2e9e16a01a2d *R/0.generics.R
-5ed3acf7b82f85cff93e6adb48bbae0f *R/1.ph.R
+6d2ec511aba71c6f430976411a0be492 *R/1.ph.R
 0ce00df488e6cfe4f16cfb55a54c92be *R/2.iph.R
 3ec419b1764d26d331b04d475a5dde0d *R/2b.iph_regression.R
 42368ca3937ebecfdf4380bf700ae934 *R/6.sph.R
@@ -145,9 +145,9 @@ c636aef338a83d8d6ed828285f267bb0 *man/solve_linear_system.Rd
 31c0a83a303881582d4031ee51cb4530 *man/sumPH.Rd
 116fc43f1c163f1485d1cc49cc6280bb *man/vectorOfMatrices_arma.Rd
 a7702daaa6fa245ef1ef190a33552b42 *man/vectorOfMatrices_arma2.Rd
-617f1dde20ac36a37a905eb062400b00 *src/EM_LL.cpp
-3223b693388b8c921c625072e01cbb68 *src/EM_LL_PADE.cpp
-74067f6a2597d48ad657b78516ab1969 *src/EM_LL_UNI.cpp
+b7489c2f883a539a343c24223afb7d20 *src/EM_LL.cpp
+2978a313077a8eabdcd2c375983ceef9 *src/EM_LL_PADE.cpp
+c4adac6542438faeb71e2af2616eecae *src/EM_LL_UNI.cpp
 61059660eb073d93e00e8ee054237071 *src/Makevars
 61059660eb073d93e00e8ee054237071 *src/Makevars.win
 e4f9514dad38c749031a0524e7247187 *src/RcppExports.cpp
