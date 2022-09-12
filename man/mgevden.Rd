@@ -2,27 +2,24 @@
 % Please edit documentation in R/RcppExports.R
 \name{mgevden}
 \alias{mgevden}
-\title{Matrix GEV density}
+\title{Matrix-GEV density}
 \usage{
-mgevden(x, alpha, S, mu, sigma, xi)
+mgevden(x, alpha, S, beta)
 }
 \arguments{
-\item{x}{non-negative value}
+\item{x}{Non-negative value.}
 
-\item{alpha}{Initial probabilities}
+\item{alpha}{Initial probabilities.}
 
-\item{S}{sub-intensity matrix}
+\item{S}{Sub-intensity matrix.}
 
-\item{mu}{location parameter}
-
-\item{sigma}{scale parameter}
-
-\item{xi}{shape parameter}
+\item{beta}{Transformation parameters.}
 }
 \value{
-The density at \code{x}
+The density at \code{x}.
 }
 \description{
-Computes the density of a matrix GEV distribution with parameters \code{alpha}, \code{S} and \code{beta} at \code{x}
-Dont allow for atoms in zero
+Computes the density of a matrix-GEV distribution with parameters
+ \code{alpha}, \code{S} and \code{beta} at \code{x}.
+Does not allow for atoms in zero.
 }

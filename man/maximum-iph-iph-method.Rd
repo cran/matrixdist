@@ -2,20 +2,20 @@
 % Please edit documentation in R/2.iph.R
 \name{maximum,iph,iph-method}
 \alias{maximum,iph,iph-method}
-\title{Maximum Method for inhomogeneous phase type distributions}
+\title{Maximum Method for inhomogeneous phase-type distributions}
 \usage{
 \S4method{maximum}{iph,iph}(x1, x2)
 }
 \arguments{
-\item{x1}{an object of class \linkS4class{iph}.}
+\item{x1}{An object of class \linkS4class{iph}.}
 
-\item{x2}{an object of class \linkS4class{iph}.}
+\item{x2}{An object of class \linkS4class{iph}.}
 }
 \value{
 An object of class \linkS4class{iph}.
 }
 \description{
-Maximum Method for inhomogeneous phase type distributions
+Maximum Method for inhomogeneous phase-type distributions
 }
 \examples{
 iph1 <- iph(ph(structure = "general", dimension = 3), gfun = "weibull", gfun_pars = 2)

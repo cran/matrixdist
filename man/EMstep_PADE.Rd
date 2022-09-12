@@ -2,25 +2,25 @@
 % Please edit documentation in R/RcppExports.R
 \name{EMstep_PADE}
 \alias{EMstep_PADE}
-\title{EM using Matlab algorithm for matrix exponential in combination with Armadillo}
+\title{EM for phase-type distributions using Pade approximation for matrix exponential}
 \usage{
 EMstep_PADE(h, alpha, S, obs, weight, rcens, rcweight)
 }
 \arguments{
-\item{h}{nuisance parameter}
+\item{h}{Nuisance parameter.}
 
-\item{alpha}{initial probalities}
+\item{alpha}{Initial probabilities.}
 
-\item{S}{sub-intensity}
+\item{S}{Sub-intensity matrix.}
 
-\item{obs}{the observations}
+\item{obs}{The observations.}
 
-\item{weight}{the weights for the observations}
+\item{weight}{The weights for the observations.}
 
-\item{rcens}{censored observations}
+\item{rcens}{Censored observations.}
 
-\item{rcweight}{the weights for the censored observations}
+\item{rcweight}{The weights for the censored observations.}
 }
 \description{
-EM using Matlab algorithm for matrix exponential in combination with Armadillo
+EM for phase-type distributions using Pade approximation for matrix exponential
 }

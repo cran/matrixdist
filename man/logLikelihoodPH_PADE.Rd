@@ -2,25 +2,25 @@
 % Please edit documentation in R/RcppExports.R
 \name{logLikelihoodPH_PADE}
 \alias{logLikelihoodPH_PADE}
-\title{Loglikelihood of PH using Pade}
+\title{Loglikelihood of phase-type using Pade approximation}
 \usage{
 logLikelihoodPH_PADE(h, alpha, S, obs, weight, rcens, rcweight)
 }
 \arguments{
-\item{h}{nuisance parameter}
+\item{h}{Nuisance parameter.}
 
-\item{alpha}{initial probabilities}
+\item{alpha}{Initial probabilities.}
 
-\item{S}{sub-intensity}
+\item{S}{Sub-intensity matrix.}
 
-\item{obs}{the observations}
+\item{obs}{The observations.}
 
-\item{weight}{weight of the observations}
+\item{weight}{The weights of the observations.}
 
-\item{rcens}{censored observations}
+\item{rcens}{Censored observations.}
 
-\item{rcweight}{weight of the censored observations}
+\item{rcweight}{The weights of the censored observations.}
 }
 \description{
-Loglikelihood for a sample
+Loglikelihood for a sample.
 }

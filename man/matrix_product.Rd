@@ -7,12 +7,12 @@
 matrix_product(A1, A2)
 }
 \arguments{
-\item{A1}{matrix}
+\item{A1}{A matrix.}
 
-\item{A2}{matrix}
+\item{A2}{A matrix.}
 }
 \value{
-Computes C = A1 * A2
+Computes A1 * A2.
 }
 \description{
 Product of two matrices

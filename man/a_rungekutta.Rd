@@ -2,19 +2,19 @@
 % Please edit documentation in R/RcppExports.R
 \name{a_rungekutta}
 \alias{a_rungekutta}
-\title{Runge Kutta for the calculation of the a vectors in a EM step}
+\title{Runge-Kutta for the calculation of the a vector in a EM step}
 \usage{
 a_rungekutta(avector, dt, h, S)
 }
 \arguments{
-\item{avector}{the a vector}
+\item{avector}{The a vector.}
 
-\item{dt}{increment}
+\item{dt}{Increment.}
 
-\item{h}{step-length}
+\item{h}{Step-length.}
 
-\item{S}{sub-intensity}
+\item{S}{Sub-intensity matrix.}
 }
 \description{
-Can be used for the loglikelihood
+Runge-Kutta for the calculation of the a vector in a EM step
 }

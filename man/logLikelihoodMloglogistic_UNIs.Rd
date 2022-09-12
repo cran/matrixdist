@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{logLikelihoodMloglogistic_UNIs}
 \alias{logLikelihoodMloglogistic_UNIs}
-\title{Loglikelihood of matrix-loglogistic using Uniformization}
+\title{Loglikelihood of PI with matrix-loglogistic using uniformization}
 \usage{
 logLikelihoodMloglogistic_UNIs(
   h,
@@ -18,26 +18,26 @@ logLikelihoodMloglogistic_UNIs(
 )
 }
 \arguments{
-\item{h}{positive parameter}
+\item{h}{Positive parameter.}
 
-\item{alpha}{initial probabilities}
+\item{alpha}{Initial probabilities.}
 
-\item{S}{sub-intensity}
+\item{S}{Sub-intensity matrix.}
 
-\item{beta}{parameter of transformation}
+\item{beta}{Parameter of transformation.}
 
-\item{obs}{the observations}
+\item{obs}{The observations.}
 
-\item{weight}{weight of the observations}
+\item{weight}{Weights of the observations.}
 
-\item{rcens}{censored observations}
+\item{rcens}{Censored observations.}
 
-\item{rcweight}{weight of the censored observations}
+\item{rcweight}{Weights of the censored observations.}
 
-\item{scale1}{scale for observations}
+\item{scale1}{Scale for observations.}
 
-\item{scale2}{scale for censored observations}
+\item{scale2}{Scale for censored observations.}
 }
 \description{
-Loglikelihood for a sample
+Loglikelihood for a sample.
 }

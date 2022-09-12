@@ -2,24 +2,24 @@
 % Please edit documentation in R/1.ph.R
 \name{maximum,ph,ph-method}
 \alias{maximum,ph,ph-method}
-\title{Maximum Method for phase type distributions}
+\title{Maximum Method for phase-type distributions}
 \usage{
 \S4method{maximum}{ph,ph}(x1, x2)
 }
 \arguments{
-\item{x1}{an object of class \linkS4class{ph}.}
+\item{x1}{An object of class \linkS4class{ph}.}
 
-\item{x2}{an object of class \linkS4class{ph}.}
+\item{x2}{An object of class \linkS4class{ph}.}
 }
 \value{
 An object of class \linkS4class{ph}.
 }
 \description{
-Maximum Method for phase type distributions
+Maximum Method for phase-type distributions
 }
 \examples{
 ph1 <- ph(structure = "general", dimension = 3)
 ph2 <- ph(structure = "gcoxian", dimension = 5)
-ph_min <- minimum(ph1, ph2)
-ph_min
+ph_max <- maximum(ph1, ph2)
+ph_max
 }

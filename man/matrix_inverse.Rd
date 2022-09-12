@@ -7,8 +7,11 @@
 matrix_inverse(A)
 }
 \arguments{
-\item{A}{a matrix}
+\item{A}{A matrix.}
+}
+\value{
+Inverse of A.
 }
 \description{
-Computes the inverse
+Inverse of a matrix
 }

@@ -2,20 +2,20 @@
 % Please edit documentation in R/1.ph.R
 \name{quan,ph-method}
 \alias{quan,ph-method}
-\title{Quantile Method for phase type distributions}
+\title{Quantile Method for phase-type distributions}
 \usage{
 \S4method{quan}{ph}(x, p)
 }
 \arguments{
-\item{x}{an object of class \linkS4class{ph}.}
+\item{x}{An object of class \linkS4class{ph}.}
 
-\item{p}{a vector of probabilities.}
+\item{p}{A vector of probabilities.}
 }
 \value{
-A list containing the probabilities and corresponding quantile evaluations.
+A vector containing the quantile evaluations at the given locations.
 }
 \description{
-Quantile Method for phase type distributions
+Quantile Method for phase-type distributions
 }
 \examples{
 obj <- ph(structure = "general")

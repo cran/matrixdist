@@ -2,20 +2,20 @@
 % Please edit documentation in R/2.iph.R
 \name{dens,iph-method}
 \alias{dens,iph-method}
-\title{Density Method for inhomogeneous phase type distributions}
+\title{Density Method for inhomogeneous phase-type distributions}
 \usage{
 \S4method{dens}{iph}(x, y)
 }
 \arguments{
-\item{x}{an object of class \linkS4class{iph}.}
+\item{x}{An object of class \linkS4class{iph}.}
 
-\item{y}{a vector of locations.}
+\item{y}{A vector of locations.}
 }
 \value{
-A list containing the locations and corresponding density evaluations.
+A vector containing the density evaluations at the given locations.
 }
 \description{
-Density Method for inhomogeneous phase type distributions
+Density Method for inhomogeneous phase-type distributions
 }
 \examples{
 obj <- iph(ph(structure = "general"), gfun = "weibull", gfun_pars = 2)

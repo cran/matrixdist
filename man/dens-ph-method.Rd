@@ -2,20 +2,20 @@
 % Please edit documentation in R/1.ph.R
 \name{dens,ph-method}
 \alias{dens,ph-method}
-\title{Density Method for phase type distributions}
+\title{Density Method for phase-type distributions}
 \usage{
 \S4method{dens}{ph}(x, y)
 }
 \arguments{
-\item{x}{an object of class \linkS4class{ph}.}
+\item{x}{An object of class \linkS4class{ph}.}
 
-\item{y}{a vector of locations.}
+\item{y}{A vector of locations.}
 }
 \value{
-A list containing the locations and corresponding density evaluations.
+A vector containing the density evaluations at the given locations.
 }
 \description{
-Density Method for phase type distributions
+Density Method for phase-type distributions
 }
 \examples{
 obj <- ph(structure = "general")

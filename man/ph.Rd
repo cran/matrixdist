@@ -2,26 +2,26 @@
 % Please edit documentation in R/1.ph.R
 \name{ph}
 \alias{ph}
-\title{Constructor Function for phase type distributions}
+\title{Constructor Function for phase-type distributions}
 \usage{
 ph(alpha = NULL, S = NULL, structure = NULL, dimension = 3)
 }
 \arguments{
-\item{alpha}{a probability vector.}
+\item{alpha}{A probability vector.}
 
-\item{S}{a sub-intensity matrix.}
+\item{S}{A sub-intensity matrix.}
 
-\item{structure}{a valid ph structure ("general", "coxian", "hyperexponential", "gcoxian", "gerlang").}
+\item{structure}{A valid ph structure ("general", "coxian", "hyperexponential", "gcoxian", "gerlang").}
 
-\item{dimension}{the dimension of the ph structure (if structure is provided).}
+\item{dimension}{The dimension of the ph structure (if structure is provided).}
 }
 \value{
 An object of class \linkS4class{ph}.
 }
 \description{
-Constructor Function for phase type distributions
+Constructor Function for phase-type distributions
 }
 \examples{
-ph(structure = "gcoxian", dim = 5)
+ph(structure = "gcoxian", dimension = 5)
 ph(alpha = c(.5, .5), S = matrix(c(-1, .5, .5, -1), 2, 2))
 }

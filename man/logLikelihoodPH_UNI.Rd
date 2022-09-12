@@ -2,25 +2,25 @@
 % Please edit documentation in R/RcppExports.R
 \name{logLikelihoodPH_UNI}
 \alias{logLikelihoodPH_UNI}
-\title{Loglikelihood using Uniformization}
+\title{Loglikelihood of phase-type using uniformization}
 \usage{
 logLikelihoodPH_UNI(h, alpha, S, obs, weight, rcens, rcweight)
 }
 \arguments{
-\item{h}{positive parameter}
+\item{h}{Positive parameter.}
 
-\item{alpha}{initial probabilities}
+\item{alpha}{Initial probabilities.}
 
-\item{S}{sub-intensity}
+\item{S}{Sub-intensity matrix.}
 
-\item{obs}{the observations}
+\item{obs}{The observations.}
 
-\item{weight}{weight of the observations}
+\item{weight}{Weights of the observations.}
 
-\item{rcens}{censored observations}
+\item{rcens}{Censored observations.}
 
-\item{rcweight}{weight of the censored observations}
+\item{rcweight}{Weights of the censored observations.}
 }
 \description{
-Loglikelihood for a sample
+Loglikelihood for a sample.
 }

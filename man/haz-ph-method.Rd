@@ -2,20 +2,20 @@
 % Please edit documentation in R/1.ph.R
 \name{haz,ph-method}
 \alias{haz,ph-method}
-\title{Hazard rate Method for phase type distributions}
+\title{Hazard rate Method for phase-type distributions}
 \usage{
 \S4method{haz}{ph}(x, y)
 }
 \arguments{
-\item{x}{an object of class \linkS4class{ph}.}
+\item{x}{An object of class \linkS4class{ph}.}
 
-\item{y}{a vector of locations.}
+\item{y}{A vector of locations.}
 }
 \value{
-A list containing the locations and corresponding hazard rate evaluations.
+A vector containing the hazard rate evaluations at the given locations.
 }
 \description{
-Hazard rate Method for phase type distributions
+Hazard rate Method for phase-type distributions
 }
 \examples{
 obj <- ph(structure = "general")

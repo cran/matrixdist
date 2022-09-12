@@ -2,13 +2,13 @@
 % Please edit documentation in R/2.iph.R
 \name{show,iph-method}
 \alias{show,iph-method}
-\title{Show Method for inhomogeneous phase type distributions}
+\title{Show Method for inhomogeneous phase-type distributions}
 \usage{
 \S4method{show}{iph}(object)
 }
 \arguments{
-\item{object}{an object of class \linkS4class{iph}.}
+\item{object}{An object of class \linkS4class{iph}.}
 }
 \description{
-Show Method for inhomogeneous phase type distributions
+Show Method for inhomogeneous phase-type distributions
 }
