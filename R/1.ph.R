@@ -137,6 +137,32 @@ setMethod(
   }
 )
 
+#' Mixture Method for phase-type distributions
+#'
+#' @param x1 An object of class \linkS4class{ph}.
+#' @param x2 An object of class \linkS4class{ph}.
+#' @param prob Probability for first object.
+#'
+#' @return An object of class \linkS4class{ph}.
+#' @export
+#'
+#' @examples
+#' ph1 <- ph(structure = "general", dimension = 3)
+#' ph2 <- ph(structure = "gcoxian", dimension = 5)
+#' ph_mix <- mixture(ph1, ph2, 0.5)
+#' ph_mix
+setMethod(
+  "mixture", signature(x1 = "ph", x2 = "ph"),
+  function(x1, x2, prob) {
+    n1 <- length(x1@pars$alpha)
+    n2 <- length(x2@pars$alpha)
+    alpha <- c(prob * x1@pars$alpha, (1 - prob) * x2@pars$alpha)
+    S1 <- rbind(x1@pars$S, matrix(0, n2, n1))
+    S2 <- rbind(matrix(0, n1, n2), x2@pars$S)
+    return(ph(alpha = alpha, S = cbind(S1, S2)))
+  }
+)
+
 #' Moment Method for phase-type distributions
 #'
 #' @param x An object of class \linkS4class{ph}.
@@ -153,20 +179,112 @@ setMethod(
   "moment", signature(x = "ph"),
   function(x, k = 1) {
     if (k <= 0) {
-      return("k should be positive")
+      stop("k should be positive")
     }
     if ((k %% 1) != 0) {
-      return("k should be an integer")
+      stop("k should be an integer")
     }
     if (methods::is(x, "iph")) {
       warning("moment of undelying ph structure is provided for iph objects")
     }
     m <- solve(-x@pars$S)
-    prod <- diag(nrow(m))
-    for (i in 1:k) {
-      prod <- prod %*% m
-    }
+    prod <- matrix_power(k, m)
     return(factorial(k) * sum(x@pars$alpha %*% prod))
+  }
+)
+
+#' Mean Method for phase-type distributions
+#'
+#' @param x An object of class \linkS4class{ph}.
+#'
+#' @return The raw first moment of the \linkS4class{ph} (or undelying \linkS4class{ph}) object.
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' ph1 <- ph(structure = "general", dimension = 3)
+#' mean(ph1)
+setMethod(
+  "mean", signature(x = "ph"),
+  function(x) {
+    if (methods::is(x, "iph")) {
+      warning("moment of undelying ph structure is provided for iph objects")
+    }
+    m <- solve(-x@pars$S)
+    return(sum(x@pars$alpha %*% m))
+  }
+)
+
+#' Var Method for phase-type distributions
+#'
+#' @param x An object of class \linkS4class{ph}.
+#'
+#' @return The variance of the \linkS4class{ph} (or undelying \linkS4class{ph}) object.
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' ph1 <- ph(structure = "general", dimension = 3)
+#' var(ph1)
+setMethod(
+  "var", signature(x = "ph"),
+  function(x) {
+    if (methods::is(x, "iph")) {
+      warning("variance of undelying ph structure is provided for iph objects")
+    }
+    m <- solve(-x@pars$S)
+    m2 <- matrix_power(2, m)
+    return(2 * sum(x@pars$alpha %*% m2) - (sum(x@pars$alpha %*% m))^2)
+  }
+)
+
+#' Laplace Method for phase-type distributions
+#'
+#' @param x An object of class \linkS4class{ph}.
+#' @param r A vector of real values.
+#'
+#' @return The Laplace transform of the \linkS4class{ph}
+#'  (or undelying \linkS4class{ph}) object at the given locations.
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' ph1 <- ph(structure = "general", dimension = 3)
+#' laplace(ph1, 3)
+setMethod(
+  "laplace", signature(x = "ph"),
+  function(x, r) {
+    lim <- max(Re(eigen(x@pars$S)$values))
+    if (any(r <= lim)) {
+      stop("r should be above the largest real eigenvalue of S")
+    }
+    l <- ph_laplace(r, x@pars$alpha, x@pars$S)
+    return(l)
+  }
+)
+
+#' Mgf Method for phase-type distributions
+#'
+#' @param x An object of class \linkS4class{ph}.
+#' @param r A vector of real values.
+#'
+#' @return The mgf of the \linkS4class{ph} (or undelying \linkS4class{ph}) object
+#'  at the given locations.
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' ph1 <- ph(structure = "general", dimension = 3)
+#' mgf(ph1, 0.4)
+setMethod(
+  "mgf", signature(x = "ph"),
+  function(x, r) {
+    lim <- -max(Re(eigen(x@pars$S)$values))
+    if (any(r > lim)) {
+      stop("r should be below the negative largest real eigenvalue of S")
+    }
+    l <- ph_laplace(-r, x@pars$alpha, x@pars$S)
+    return(l)
   }
 )
 
@@ -305,7 +423,7 @@ setMethod("quan", c(x = "ph"), function(x,
 #' @examples
 #' obj <- iph(ph(structure = "general", dimension = 2), gfun = "weibull", gfun_pars = 2)
 #' data <- sim(obj, n = 100)
-#' fit(obj, data, stepsEM = 1000, every = 200)
+#' fit(obj, data, stepsEM = 100, every = 20)
 setMethod(
   "fit", c(x = "ph", y = "ANY"),
   function(x,
@@ -539,4 +657,25 @@ setMethod("LRT", c(x = "ph", y = "ph"), function(x, y) {
   LR <- 2 * abs(logLik(y) - logLik(x))
   degrees <- abs(attributes(logLik(y))$df - attributes(logLik(x))$df)
   return(c(LR = LR, p.val = pchisq(LR, df = degrees, lower.tail = FALSE)))
+})
+
+#' TVR Method for ph Class
+#'
+#' @param x An object of class \linkS4class{ph}.
+#' @param rew A vector of rewards.
+#'
+#' @return An object of the of class \linkS4class{ph}.
+#' @export
+#'
+#' @examples
+#' obj <- ph(structure = "general")
+#' TVR(obj, c(1, 2, 3))
+setMethod("TVR", c(x = "ph"), function(x, rew) {
+  if (length(x@pars$alpha) != length(rew)) {
+    stop("vector of rewards of wrong dimension")
+  } else {
+    mar_par <- tvr_ph(x@pars$alpha, x@pars$S, rew)
+    x0 <- ph(alpha = mar_par[[1]], S = mar_par[[2]])
+  }
+  return(x0)
 })

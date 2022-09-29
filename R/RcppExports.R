@@ -328,6 +328,19 @@ EMstep_bivph <- function(alpha, S11, S12, S22, obs, weight) {
     invisible(.Call(`_matrixdist_EMstep_bivph`, alpha, S11, S12, S22, obs, weight))
 }
 
+#' Loglikelihood for Bivariate PH
+#' 
+#' @param alpha Vector of initial probabilities.
+#' @param S11 Sub-intensity matrix.
+#' @param S12 Matrix.
+#' @param S22 Sub-intensity matrix.
+#' @param obs The observations.
+#' @param weight The weights of the observations.
+#' 
+logLikelihoodbivPH <- function(alpha, S11, S12, S22, obs, weight) {
+    .Call(`_matrixdist_logLikelihoodbivPH`, alpha, S11, S12, S22, obs, weight)
+}
+
 #' Loglikelihood for PH-MoE
 #' 
 #' @param alpha1 Initial probabilities for non-censored data.
@@ -1035,20 +1048,6 @@ rmatrixgev <- function(n, alpha, S, mu, sigma, xi = 0) {
     .Call(`_matrixdist_rmatrixgev`, n, alpha, S, mu, sigma, xi)
 }
 
-#' Simulate discrete phase-type
-#'
-#' Generates a sample of size \code{n} from a discrete phase-type distribution with
-#' parameters \code{alpha} and \code{S}.
-#' 
-#' @param n Sample size.
-#' @param alpha Vector of initial probabilities.
-#' @param S Sub-transition matrix.
-#' @return Simulated sample.
-#'
-rdphasetype <- function(n, alpha, S) {
-    .Call(`_matrixdist_rdphasetype`, n, alpha, S)
-}
-
 #' Simulate a MPH* random vector
 #'
 #' Generates a sample of size \code{n} from a MPH* distribution with parameters
@@ -1064,205 +1063,33 @@ rMPHstar <- function(n, alpha, S, R) {
     .Call(`_matrixdist_rMPHstar`, n, alpha, S, R)
 }
 
-#' Find how many states have positive reward
+#' Simulate discrete phase-type
 #'
-#' @param R reward vector
+#' Generates a sample of size \code{n} from a discrete phase-type distribution with
+#' parameters \code{alpha} and \code{S}.
+#' 
+#' @param n Sample size.
+#' @param alpha Vector of initial probabilities.
+#' @param S Sub-transition matrix.
+#' @return Simulated sample.
 #'
-#' @return The number of states with positive rewards
-#'
-n_pos <- function(R) {
-    .Call(`_matrixdist_n_pos`, R)
+rdphasetype <- function(n, alpha, S) {
+    .Call(`_matrixdist_rdphasetype`, n, alpha, S)
 }
 
-#' Find how many states have null reward
+#' Simulate MDPH*
 #'
-#' @param R reward vector
+#' Generates a sample of size \code{n} from a MDPH* distribution with
+#' parameters \code{alpha}, \code{S}, and \code{R}.
+#' 
+#' @param n Sample size.
+#' @param alpha Vector of initial probabilities.
+#' @param S Sub-transition matrix.
+#' @param R Reward matrix.
+#' @return Simulated sample.
 #'
-#' @return The number of states with null rewards
-#'
-n_null <- function(R) {
-    .Call(`_matrixdist_n_null`, R)
-}
-
-#' Find which states have positive reward
-#'
-#' @param R reward vector
-#'
-#' @return A vector with the states (number) that are associated with positive rewards
-#'
-plus_states <- function(R) {
-    .Call(`_matrixdist_plus_states`, R)
-}
-
-#' Find which states have null reward
-#'
-#' @param R reward vector
-#'
-#' @return A vector with the states (number) that are associated with null rewards
-#'
-null_states <- function(R) {
-    .Call(`_matrixdist_null_states`, R)
-}
-
-#' Obtain Q++
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#'
-#' @return The matrix Q++ where we have transition probabilities from/to states associated with positive rewards
-#'
-Q_pos_pos <- function(R, Qtilda) {
-    .Call(`_matrixdist_Q_pos_pos`, R, Qtilda)
-}
-
-#' Obtain Q00
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#'
-#' @return the matrix Q00 where we have transition probabilities from/to states associated with null rewards
-#'
-Q_null_null <- function(R, Qtilda) {
-    .Call(`_matrixdist_Q_null_null`, R, Qtilda)
-}
-
-#' Obtain Qtilda+0
-#'
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#'
-#' @return the matrix Qtilda+0 where we have transition probabilities from states associated with positive rewards to ones associated with null rewards
-#'
-Q_pos_null <- function(R, Qtilda) {
-    .Call(`_matrixdist_Q_pos_null`, R, Qtilda)
-}
-
-#' Obtain Q0+
-#'
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#'
-#' @return the matrix Q0+ where we have transition probabilities from states associated with null rewards  to ones associated with positive rewards
-#'
-Q_null_pos <- function(R, Qtilda) {
-    .Call(`_matrixdist_Q_null_pos`, R, Qtilda)
-}
-
-#' Obtain q+
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#'
-#' @return Creates the vector with transition probabilities from states associated with positive rewards to the absorption state
-#'
-q_pos <- function(R, Qtilda) {
-    .Call(`_matrixdist_q_pos`, R, Qtilda)
-}
-
-#' Obtain q0
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#'
-#' @return Creates the vector with transition probabilities from states associated with null rewards to the absorption state
-#'
-q_null <- function(R, Qtilda) {
-    .Call(`_matrixdist_q_null`, R, Qtilda)
-}
-
-#' Obtain new sub-transition matrix for the new embedded MC
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#'
-#' @return The sub-transition matrix of the new embedded Markov Chain
-#'
-new_trans_mat <- function(R, Qtilda) {
-    .Call(`_matrixdist_new_trans_mat`, R, Qtilda)
-}
-
-#' Obtain new sub-transition exit vector for the new embedded MC
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#'
-#' @return The exit rates for the new embedded Markov Chain
-#'
-new_trans_exit <- function(R, Qtilda) {
-    .Call(`_matrixdist_new_trans_exit`, R, Qtilda)
-}
-
-#' Get pi+
-#'
-#' @param R reward vector
-#' @param alpha initial distribution vector of the original MJP
-#'
-#' @return The initial distribution vector for states associated with positive rewards
-#'
-pi_pos <- function(R, alpha) {
-    .Call(`_matrixdist_pi_pos`, R, alpha)
-}
-
-#' Get pi0
-#'
-#' @param R reward vector
-#' @param alpha initial distribution vector of the original MJP
-#'
-#' @return The initial distribution vector for states associated with null rewards
-#'
-pi_null <- function(R, alpha) {
-    .Call(`_matrixdist_pi_null`, R, alpha)
-}
-
-#' Obtain new sub-transition matrix for the new embedded MC
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#' @param alpha the original initial distribution vector
-#'
-#'@return The initial distribution vector for the new Markov Jump Process
-#'
-new_pi <- function(R, Qtilda, alpha) {
-    .Call(`_matrixdist_new_pi`, R, Qtilda, alpha)
-}
-
-#' Obtain new exit rate vector for the new embedded MC
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#' @param S original sub-intensity matrix
-#'
-#' @return The exit rate vector for the new Markov Jump Process
-#'
-new_exit_vec <- function(R, Qtilda, S) {
-    .Call(`_matrixdist_new_exit_vec`, R, Qtilda, S)
-}
-
-#' Obtain new sub-intensity matrix for the new MJP
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#' @param S original sub-intensity matrix
-#'
-#' @return The sub-intensity matrix for the new Markov Jump Process
-#'
-new_subint_mat <- function(R, Qtilda, S) {
-    .Call(`_matrixdist_new_subint_mat`, R, Qtilda, S)
-}
-
-#' Performs the TVR
-#'
-#' @param R reward vector
-#' @param Qtilda transition-matrix of the Embedded MC
-#' @param alpha initial distribution vector
-#' @param S original sub-intensity matrix
-#'
-#' @return A list of transformed PH distributions
-#'
-transf_via_rew <- function(R, Qtilda, alpha, S) {
-    .Call(`_matrixdist_transf_via_rew`, R, Qtilda, alpha, S)
+rMDPHstar <- function(n, alpha, S, R) {
+    .Call(`_matrixdist_rMDPHstar`, n, alpha, S, R)
 }
 
 #' Product of two matrices
@@ -1500,6 +1327,32 @@ mgevcdf <- function(x, alpha, S, beta, lower_tail = TRUE) {
     .Call(`_matrixdist_mgevcdf`, x, alpha, S, beta, lower_tail)
 }
 
+#' Bivariate phase-type joint density of the feed forward type
+#'
+#' @param x Matrix of values.
+#' @param alpha Vector of initial probabilities.
+#' @param S11 Sub-intensity matrix.
+#' @param S12 Matrix.
+#' @param S22 Sub-intensity matrix.
+#' @return Joint density at \code{x}.
+#' 
+bivph_density <- function(x, alpha, S11, S12, S22) {
+    .Call(`_matrixdist_bivph_density`, x, alpha, S11, S12, S22)
+}
+
+#' Bivariate phase-type joint tail of the feed forward type
+#'
+#' @param x Matrix of values.
+#' @param alpha Vector of initial probabilities.
+#' @param S11 Sub-intensity matrix.
+#' @param S12 Matrix.
+#' @param S22 Sub-intensity matrix.
+#' @return Joint tail at \code{x}.
+#' 
+bivph_tail <- function(x, alpha, S11, S12, S22) {
+    .Call(`_matrixdist_bivph_tail`, x, alpha, S11, S12, S22)
+}
+
 #' Discrete phase-type density
 #' 
 #' Computes the density of discrete phase-type distribution with parameters
@@ -1529,30 +1382,44 @@ dphcdf <- function(x, alpha, S, lower_tail = TRUE) {
     .Call(`_matrixdist_dphcdf`, x, alpha, S, lower_tail)
 }
 
-#' Bivariate phase-type joint density of the feed forward type
+#' Bivariate discrete phase-type joint density of the feed forward type
 #'
 #' @param x Matrix of values.
 #' @param alpha Vector of initial probabilities.
-#' @param S11 Sub-intensity matrix.
+#' @param S11 Sub-transition matrix.
 #' @param S12 Matrix.
-#' @param S22 Sub-intensity matrix.
+#' @param S22 Sub-transition matrix.
 #' @return Joint density at \code{x}.
 #' 
-bivph_density <- function(x, alpha, S11, S12, S22) {
-    .Call(`_matrixdist_bivph_density`, x, alpha, S11, S12, S22)
+bivdph_density <- function(x, alpha, S11, S12, S22) {
+    .Call(`_matrixdist_bivdph_density`, x, alpha, S11, S12, S22)
 }
 
-#' Bivariate phase-type joint tail of the feed forward type
+#' Bivariate discrete phase-type joint tail of the feed forward type
 #'
 #' @param x Matrix of values.
 #' @param alpha Vector of initial probabilities.
-#' @param S11 Sub-intensity matrix.
+#' @param S11 Sub-transition matrix.
 #' @param S12 Matrix.
-#' @param S22 Sub-intensity matrix.
+#' @param S22 Sub-transition matrix.
 #' @return Joint tail at \code{x}.
 #' 
-bivph_tail <- function(x, alpha, S11, S12, S22) {
-    .Call(`_matrixdist_bivph_tail`, x, alpha, S11, S12, S22)
+bivdph_tail <- function(x, alpha, S11, S12, S22) {
+    .Call(`_matrixdist_bivdph_tail`, x, alpha, S11, S12, S22)
+}
+
+#' Multivariate discrete phase-type density
+#' 
+#' Computes the density of multivariate discrete phase-type distribution with 
+#' parameters \code{alpha} and \code{S} at \code{x}.
+#' 
+#' @param x Matrix of positive integer values.
+#' @param alpha Initial probabilities.
+#' @param S_list List of marginal sub-transition matrices.
+#' @return The density at \code{x}.
+#' 
+mdphdensity <- function(x, alpha, S_list) {
+    .Call(`_matrixdist_mdphdensity`, x, alpha, S_list)
 }
 
 #' EM for discrete phase-type
@@ -1577,6 +1444,54 @@ EMstep_dph_MoE <- function(alpha, S, obs, weight) {
     .Call(`_matrixdist_EMstep_dph_MoE`, alpha, S, obs, weight)
 }
 
+#' EM for discrete bivariate phase-type
+#' 
+#' @param alpha Initial probabilities.
+#' @param S11 Sub-transition matrix.
+#' @param S12 Matrix.
+#' @param S22 Sub-transition matrix.
+#' @param obs The observations.
+#' @param weight The weights for the observations.
+#' 
+EMstep_bivdph <- function(alpha, S11, S12, S22, obs, weight) {
+    invisible(.Call(`_matrixdist_EMstep_bivdph`, alpha, S11, S12, S22, obs, weight))
+}
+
+#' EM for discrete bivariate phase-type MoE
+#' 
+#' @param alpha Initial probabilities.
+#' @param S11 Sub-transition matrix.
+#' @param S12 Matrix.
+#' @param S22 Sub-transition matrix.
+#' @param obs The observations.
+#' @param weight The weights for the observations.
+#' 
+EMstep_bivdph_MoE <- function(alpha, S11, S12, S22, obs, weight) {
+    .Call(`_matrixdist_EMstep_bivdph_MoE`, alpha, S11, S12, S22, obs, weight)
+}
+
+#' EM for multivariate discrete phase-type
+#' 
+#' @param alpha Initial probabilities.
+#' @param S_list List of marginal sub-transition matrices.
+#' @param obs The observations.
+#' @param weight The weights for the observations.
+#' 
+EMstep_mdph <- function(alpha, S_list, obs, weight) {
+    invisible(.Call(`_matrixdist_EMstep_mdph`, alpha, S_list, obs, weight))
+}
+
+#' EM for multivariate discrete phase-type MoE
+#' 
+#' @param alpha Initial probabilities.
+#' @param S_list List of marginal sub-transition matrices.
+#' @param obs The observations.
+#' @param weight The weights for the observations.
+#' 
+EMstep_mdph_MoE <- function(alpha, S_list, obs, weight) {
+    .Call(`_matrixdist_EMstep_mdph_MoE`, alpha, S_list, obs, weight)
+}
+
 #' Loglikelihood for discrete phase-type
 #' 
 #' @param alpha Initial probabilities.
@@ -1597,6 +1512,95 @@ logLikelihoodDPH <- function(alpha, S, obs, weight) {
 #' 
 logLikelihoodDPH_MoE <- function(alpha, S, obs, weight) {
     .Call(`_matrixdist_logLikelihoodDPH_MoE`, alpha, S, obs, weight)
+}
+
+#' Loglikelihood for bivariate discrete phase-type
+#' 
+#' @param alpha Initial probabilities.
+#' @param S11 Sub-transition matrix.
+#' @param S12 Matrix.
+#' @param S22 Sub-transition matrix.
+#' @param obs The observations.
+#' @param weight The weights of the observations.
+#' 
+logLikelihoodbivDPH <- function(alpha, S11, S12, S22, obs, weight) {
+    .Call(`_matrixdist_logLikelihoodbivDPH`, alpha, S11, S12, S22, obs, weight)
+}
+
+#' Loglikelihood for bivariate discrete phase-type MoE
+#' 
+#' @param alpha Initial probabilities.
+#' @param S11 Sub-transition matrix.
+#' @param S12 Matrix.
+#' @param S22 Sub-transition matrix.
+#' @param obs The observations.
+#' @param weight The weights of the observations.
+#' 
+logLikelihoodbivDPH_MoE <- function(alpha, S11, S12, S22, obs, weight) {
+    .Call(`_matrixdist_logLikelihoodbivDPH_MoE`, alpha, S11, S12, S22, obs, weight)
+}
+
+#' Loglikelihood for multivariate discrete phase-type
+#' 
+#' @param alpha Initial probabilities.
+#' @param S_list List of marginal sub-transition matrices.
+#' @param obs The observations.
+#' @param weight The weights of the observations.
+#' 
+logLikelihoodmDPH <- function(alpha, S_list, obs, weight) {
+    .Call(`_matrixdist_logLikelihoodmDPH`, alpha, S_list, obs, weight)
+}
+
+#' Loglikelihood for multivariate discrete phase-type MoE
+#' 
+#' @param alpha Initial probabilities.
+#' @param S_list List of marginal sub-transition matrices.
+#' @param obs The observations.
+#' @param weight The weights of the observations.
+#' 
+logLikelihoodmDPH_MoE <- function(alpha, S_list, obs, weight) {
+    .Call(`_matrixdist_logLikelihoodmDPH_MoE`, alpha, S_list, obs, weight)
+}
+
+#' Laplace transform of a phase-type distribution
+#'
+#' Computes the Laplace transform at \code{r} of a phase-type distribution with
+#'  parameters \code{alpha} and \code{S}.
+#'
+#' @param r Vector of real values.
+#' @param alpha Vector of initial probabilities.
+#' @param S Sub-intensity matrix.
+#' @return Laplace transform at \code{r}.
+#' 
+ph_laplace <- function(r, alpha, S) {
+    .Call(`_matrixdist_ph_laplace`, r, alpha, S)
+}
+
+#' Pgf of a discrete phase-type distribution
+#'
+#' Computes the pgf at \code{z} of a discrete phase-type distribution with
+#'  parameters \code{alpha} and \code{S}.
+#'
+#' @param z Vector of real values.
+#' @param alpha Vector of initial probabilities.
+#' @param S Sub-transition matrix.
+#' @return Laplace transform at \code{r}.
+#' 
+dph_pgf <- function(z, alpha, S) {
+    .Call(`_matrixdist_dph_pgf`, z, alpha, S)
+}
+
+#' Bivariate phase-type joint Laplace
+#'
+#' @param r Matrix of values.
+#' @param alpha Vector of initial probabilities.
+#' @param S11 Sub-intensity matrix.
+#' @param S12 Matrix.
+#' @param S22 Sub-intensity matrix.
+#' @return Joint laplace at \code{r}.
+#' 
+bivph_laplace <- function(r, alpha, S11, S12, S22) {
+    .Call(`_matrixdist_bivph_laplace`, r, alpha, S11, S12, S22)
 }
 
 #' EM step for the mPH class with right-censoring, for different marginal 
@@ -1791,5 +1795,50 @@ random_structure_bivph <- function(p1, p2, scale_factor = 1) {
 #'
 merge_matrices <- function(S11, S12, S22) {
     .Call(`_matrixdist_merge_matrices`, S11, S12, S22)
+}
+
+#' Find how many states have positive reward
+#'
+#' @param R reward vector
+#'
+#' @return The number of states with positive rewards
+#'
+n_pos <- function(R) {
+    .Call(`_matrixdist_n_pos`, R)
+}
+
+#' Find which states have positive reward
+#'
+#' @param R reward vector
+#'
+#' @return A vector with the states (number) that are associated with positive rewards
+#'
+plus_states <- function(R) {
+    .Call(`_matrixdist_plus_states`, R)
+}
+
+#' Performs TVR for phase-type distributions
+#'
+#' @param alpha Initial distribution vector.
+#' @param S Sub-intensity matrix.
+#' @param R Reward vector.
+#'
+#' @return A list of phase-type parameters.
+#'
+tvr_ph <- function(alpha, S, R) {
+    .Call(`_matrixdist_tvr_ph`, alpha, S, R)
+}
+
+#' Computes PH parameters of a linear combination of vector from MPHstar
+#'
+#' @param w Vector with weights.
+#' @param alpha Initial distribution vector.
+#' @param S Sub-intensity matrix.
+#' @param R Reward matrix.
+#'
+#' @return A list of PH parameters.
+#' 
+linear_combination <- function(w, alpha, S, R) {
+    .Call(`_matrixdist_linear_combination`, w, alpha, S, R)
 }
 

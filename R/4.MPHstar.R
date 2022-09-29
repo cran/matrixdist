@@ -1,4 +1,3 @@
-
 #' Multivariate Phase Type distributions obtained by transformation via rewards
 #'
 #' Class of objects for multivariate phase type distributions.
@@ -99,21 +98,46 @@ setMethod("sim", c(x = "MPHstar"), function(x, n = 1000) {
   return(U)
 })
 
-#' Transformation Via Rewards method for multivariate phase type distributions
+#' Marginal method for MPHstar class
 #'
 #' @param x An object of class \linkS4class{MPHstar}.
-#'
-#' @return A list with marginal distributions, obtained by transformation via rewards.
+#' @param mar Indicator of which marginal.
+#' @return An object of the of class \linkS4class{ph}.
 #' @export
 #'
-setMethod("TVR", c(x = "MPHstar"), function(x) {
-  alpha <- x@pars$alpha
-  S <- x@pars$S
-  R <- x@pars$R
-  Q <- embedded_mc(S)
+#' @examples
+#' obj <- MPHstar(structure = "general")
+#' marginal(obj, 1)
+setMethod("marginal", c(x = "MPHstar"), function(x, mar = 1) {
+  mar_par <- tvr_ph(x@pars$alpha, x@pars$S, x@pars$R[, mar])
+  x0 <- ph(alpha = mar_par[[1]], S = mar_par[[2]])
+  return(x0)
+})
 
-  marginal <- transf_via_rew(R, Q, alpha, S)
-  return(marginal)
+#' Linear Combination method for MPHstar class
+#'
+#' @param x An object of class \linkS4class{MPHstar}.
+#' @param w A vector with non-negative entries.
+#'
+#' @return An object of class \linkS4class{ph}.
+#' @export
+#'
+#' @examples
+#' obj <- MPHstar(structure = "general")
+#' linCom(obj, c(1, 0))
+setMethod("linCom", c(x = "MPHstar"), function(x, w) {
+  if (length(w) != ncol(x@pars$R)) {
+    stop("vector of wrong dimension")
+  }
+  if (any(w < 0)) {
+    stop("vector with negative entries")
+  }
+  if (all(w == 0)) {
+    stop("vector with all entries zero")
+  }
+  L <- linear_combination(w, x@pars$alpha, x@pars$S, x@pars$R)
+  x0 <- ph(alpha = L$alpha, S = L$S)
+  return(x0)
 })
 
 #' Find weight of observations

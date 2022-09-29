@@ -1,4 +1,4 @@
-#' Dicrete Phase Type distributions
+#' Discrete Phase Type distributions
 #'
 #' Class of objects for discrete phase-type distributions.
 #'
@@ -125,6 +125,32 @@ setMethod(
   }
 )
 
+#' Mixture Method for phase-type distributions
+#'
+#' @param x1 An object of class \linkS4class{dph}.
+#' @param x2 An object of class \linkS4class{dph}.
+#' @param prob Probability for first object.
+#'
+#' @return An object of class \linkS4class{dph}.
+#' @export
+#'
+#' @examples
+#' dph1 <- dph(structure = "general", dimension = 3)
+#' dph2 <- dph(structure = "general", dimension = 5)
+#' dph_mix <- mixture(dph1, dph2, 0.5)
+#' dph_mix
+setMethod(
+  "mixture", signature(x1 = "dph", x2 = "dph"),
+  function(x1, x2, prob) {
+    n1 <- length(x1@pars$alpha)
+    n2 <- length(x2@pars$alpha)
+    alpha <- c(prob * x1@pars$alpha, (1 - prob) * x2@pars$alpha)
+    S1 <- rbind(x1@pars$S, matrix(0, n2, n1))
+    S2 <- rbind(matrix(0, n1, n2), x2@pars$S)
+    return(ph(alpha = alpha, S = cbind(S1, S2)))
+  }
+)
+
 #' Show Method for discrete phase-type distributions
 #'
 #' @param object An object of class \linkS4class{dph}.
@@ -179,12 +205,77 @@ setMethod(
   }
 )
 
+#' Mean Method for discrete phase-type distributions
+#'
+#' @param x An object of class \linkS4class{dph}.
+#'
+#' @return The raw first moment of the \linkS4class{dph} object.
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' dph1 <- dph(structure = "general", dimension = 3)
+#' mean(dph1)
+setMethod(
+  "mean", signature(x = "dph"),
+  function(x) {
+    m <- solve(diag(nrow(x@pars$S)) - x@pars$S)
+    return(sum(x@pars$alpha %*% m))
+  }
+)
+
+#' Var Method for discrete phase-type distributions
+#'
+#' @param x An object of class \linkS4class{dph}.
+#'
+#' @return The variance of the \linkS4class{dph} object.
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' dph1 <- dph(structure = "general", dimension = 3)
+#' var(dph1)
+setMethod(
+  "var", signature(x = "dph"),
+  function(x) {
+    m <- solve(diag(nrow(x@pars$S)) - x@pars$S)
+    fm <- sum(x@pars$alpha %*% m)
+    m2 <- matrix_power(2, m)
+    sm <- 2 * sum(x@pars$alpha %*% x@pars$S %*% m2)
+    return(sm + fm - fm^2)
+  }
+)
+
+#' Pgf Method for discrete phase-type distributions
+#'
+#' @param x An object of class \linkS4class{dph}.
+#' @param z A vector of real values.
+#'
+#' @return The probability generating of the \linkS4class{dph} object at the 
+#'  given locations.
+#' @export
+#'
+#' @examples
+#' set.seed(123)
+#' dph1 <- dph(structure = "general", dimension = 3)
+#' pgf(dph1, 0.5)
+setMethod(
+  "pgf", signature(x = "dph"),
+  function(x, z) {
+    if (any(abs(z) > 1)) {
+      stop("z should between -1 and 1")
+    }
+    l <- dph_pgf(z, x@pars$alpha, x@pars$S)
+    return(l)
+  }
+)
+
 #' Simulation Method for phase-type distributions
 #'
 #' @param x An object of class \linkS4class{dph}.
 #' @param n An integer of length of realization.
 #'
-#' @return A realization of independent and identically distributed discrete 
+#' @return A realization of independent and identically distributed discrete
 #'  phase-type variables.
 #' @export
 #'
@@ -244,26 +335,22 @@ setMethod("cdf", c(x = "dph"), function(x,
   return(cdf)
 })
 
-#' Fit Method for ph Class
+#' Fit Method for dph Class
 #'
-#' @param x An object of class \linkS4class{ph}.
+#' @param x An object of class \linkS4class{dph}.
 #' @param y Vector or data.
 #' @param weight Vector of weights.
 #' @param stepsEM Number of EM steps to be performed.
 #' @param every Number of iterations between likelihood display updates.
 #'
-#' @return An object of class \linkS4class{ph}.
-#'
-#' @importFrom grDevices dev.off
-#' @importFrom graphics hist legend lines
-#' @importFrom utils head
+#' @return An object of class \linkS4class{dph}.
 #'
 #' @export
 #'
 #' @examples
 #' obj <- dph(structure = "general", dimension = 2)
 #' data <- sim(obj, n = 100)
-#' fit(obj, data, stepsEM = 1000, every = 200)
+#' fit(obj, data, stepsEM = 100, every = 20)
 setMethod(
   "fit", c(x = "dph", y = "ANY"),
   function(x,
@@ -326,10 +413,6 @@ setMethod(
 #'
 #' @return An object of class \linkS4class{sph}.
 #'
-#' @importFrom methods is new
-#' @importFrom stats optim
-#' @importFrom utils tail
-#'
 #' @export
 #'
 setMethod(
@@ -350,8 +433,8 @@ setMethod(
     if (length(weight) == 0) weight <- rep(1, n)
     S_fit <- clone_matrix(x@pars$S)
     c <- c()
-    for (i in 1:p) c <- c(c, rep(i, n)) # classes for the B matrix observations
-    extended_x <- matrix(t(as.matrix(frame[, -1])), nrow = n * p, ncol = d, byrow = TRUE) # extended form of covariates
+    for (i in 1:p) c <- c(c, rep(i, n))
+    extended_x <- matrix(t(as.matrix(frame[, -1])), nrow = n * p, ncol = d, byrow = TRUE)
     dm <- data.frame(Class = c, extended_x)
     names(dm)[-1] <- names(frame)[-1]
     ndm <- data.frame(dm[dm$Class == 1, -1])
