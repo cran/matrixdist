@@ -8,7 +8,7 @@
 Class object.
 }
 \description{
-Class of objects for multivariate phase-type distributions.
+Class of objects for multivariate inhomogeneous phase-type distributions.
 }
 \section{Slots}{
 
@@ -17,6 +17,6 @@ Class of objects for multivariate phase-type distributions.
 
 \item{\code{gfun}}{A list comprising of the parameters.}
 
-\item{\code{scale}}{SCale.}
+\item{\code{scale}}{Scale.}
 }}
 

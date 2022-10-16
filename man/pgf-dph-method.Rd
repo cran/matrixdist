@@ -12,7 +12,7 @@
 \item{z}{A vector of real values.}
 }
 \value{
-The probability generating of the \linkS4class{dph} object at the 
+The probability generating of the \linkS4class{dph} object at the
  given locations.
 }
 \description{
@@ -20,6 +20,6 @@ Pgf Method for discrete phase-type distributions
 }
 \examples{
 set.seed(123)
-dph1 <- dph(structure = "general", dimension = 3)
-pgf(dph1, 0.5)
+obj <- dph(structure = "general", dimension = 3)
+pgf(obj, 0.5)
 }

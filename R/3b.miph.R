@@ -1,10 +1,10 @@
 #' Multivariate Inhomogeneous Phase Type distributions
 #'
-#' Class of objects for multivariate phase-type distributions.
+#' Class of objects for multivariate inhomogeneous phase-type distributions.
 #'
 #' @slot name Name of the phase type distribution.
 #' @slot gfun A list comprising of the parameters.
-#' @slot scale SCale.
+#' @slot scale Scale.
 #'
 #' @return Class object.
 #' @export
@@ -17,7 +17,7 @@ setClass("miph",
   )
 )
 
-#' Constructor Function for inhomogeneous multivariate phase-type distributions
+#' Constructor Function for multivariate inhomogeneous phase-type distributions
 #'
 #' @param mph An object of class \linkS4class{mph}.
 #' @param alpha A probability vector.
@@ -25,13 +25,16 @@ setClass("miph",
 #' @param structure A vector of valid ph structures.
 #' @param dimension The dimension of the ph structure (if provided).
 #' @param variables Number of marginals.
-#' @param gfun Vector of inhomogeneity transform.
+#' @param gfun Vector of inhomogeneity transforms.
 #' @param gfun_pars List of parameters for the inhomogeneity functions.
 #' @param scale Scale.
 #'
 #' @return An object of class \linkS4class{iph}.
 #' @export
 #'
+#' @examples 
+#' under_mph <- mph(structure = c("gcoxian", "general"), dimension = 4)
+#' miph(under_mph, gfun = c("weibull", "pareto"), gfun_pars = list(c(2), c(3)))
 miph <- function(mph = NULL, # object of class mPH
                  gfun = NULL, # vector of gfun for each marginal
                  gfun_pars = NULL, # List of gfun parameters for each marginal
@@ -171,10 +174,14 @@ setMethod("show", "miph", function(object) {
 #' @param n An integer of length of realization.
 #'
 #' @return A realization of independent and identically distributed inhomogeneous
-#'  multivariate phase-type variables. If x is a M-o-E miph an array of dimension c(n,d,m) is returned,
+#'  multivariate phase-type variables. If x is a MoE miph an array of dimension c(n,d,m) is returned,
 #'  with d the number of marginals and m the number of initial distribution vectors.
 #' @export
 #'
+#' @examples
+#' under_mph <- mph(structure = c("general", "general"))
+#' obj <- miph(under_mph, gfun = c("weibull", "pareto"), gfun_pars = list(c(2), c(3)))
+#' sim(obj, 100)
 setMethod("sim", c(x = "miph"), function(x, n = 1000) {
   name <- x@gfun$name
   pars <- x@gfun$pars
@@ -211,6 +218,27 @@ setMethod("sim", c(x = "miph"), function(x, n = 1000) {
   return(U)
 })
 
+#' Marginal method for multivariate inhomogeneous phase-type distributions
+#'
+#' @param x An object of class \linkS4class{miph}.
+#' @param mar Indicator of which marginal.
+#' @return An object of the of class \linkS4class{iph}.
+#' @export
+#'
+#' @examples
+#' under_mph <- mph(structure = c("general", "general"))
+#' obj <- miph(under_mph, gfun = c("weibull", "pareto"), gfun_pars = list(c(2), c(3)))
+#' marginal(obj, 1)
+setMethod("marginal", c(x = "miph"), function(x, mar = 1) {
+  if (!(mar %in% 1:length(x@pars$S))) {
+    stop("maringal provided not available")
+  }
+  S <- x@pars$S
+  par <- x@gfun$pars
+  x0 <- iph(ph(alpha = x@pars$alpha, S = S[[mar]]), gfun = x@gfun$name[mar], gfun_pars = par[[mar]])
+  return(x0)
+})
+
 #' Density Method for multivariate inhomogeneous phase-type distributions
 #'
 #' @param x An object of class \linkS4class{miph}.
@@ -220,6 +248,10 @@ setMethod("sim", c(x = "miph"), function(x, n = 1000) {
 #' @return A list containing the locations and corresponding density evaluations.
 #' @export
 #'
+#' @examples
+#' under_mph <- mph(structure = c("general", "general"))
+#' obj <- miph(under_mph, gfun = c("weibull", "pareto"), gfun_pars = list(c(2), c(3)))
+#' dens(obj, c(1, 2))
 setMethod("dens", c(x = "miph"), function(x, y, delta = NULL) {
   alpha <- x@pars$alpha
   S <- x@pars$S
@@ -305,6 +337,10 @@ setMethod("dens", c(x = "miph"), function(x, y, delta = NULL) {
 #' @return A list containing the locations and corresponding CDF evaluations.
 #' @export
 #'
+#' @examples
+#' under_mph <- mph(structure = c("general", "general"))
+#' obj <- miph(under_mph, gfun = c("weibull", "pareto"), gfun_pars = list(c(2), c(3)))
+#' cdf(obj, c(1, 2))
 setMethod("cdf", c(x = "miph"), function(x, y, lower.tail = TRUE) {
   alpha <- x@pars$alpha
   S <- x@pars$S

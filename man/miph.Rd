@@ -2,7 +2,7 @@
 % Please edit documentation in R/3b.miph.R
 \name{miph}
 \alias{miph}
-\title{Constructor Function for inhomogeneous multivariate phase-type distributions}
+\title{Constructor Function for multivariate inhomogeneous phase-type distributions}
 \usage{
 miph(
   mph = NULL,
@@ -19,7 +19,7 @@ miph(
 \arguments{
 \item{mph}{An object of class \linkS4class{mph}.}
 
-\item{gfun}{Vector of inhomogeneity transform.}
+\item{gfun}{Vector of inhomogeneity transforms.}
 
 \item{gfun_pars}{List of parameters for the inhomogeneity functions.}
 
@@ -39,5 +39,9 @@ miph(
 An object of class \linkS4class{iph}.
 }
 \description{
-Constructor Function for inhomogeneous multivariate phase-type distributions
+Constructor Function for multivariate inhomogeneous phase-type distributions
+}
+\examples{
+under_mph <- mph(structure = c("gcoxian", "general"), dimension = 4)
+miph(under_mph, gfun = c("weibull", "pareto"), gfun_pars = list(c(2), c(3)))
 }

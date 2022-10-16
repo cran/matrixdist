@@ -173,8 +173,8 @@ setMethod(
 #'
 #' @examples
 #' set.seed(123)
-#' ph1 <- ph(structure = "general", dimension = 3)
-#' moment(ph1, 2)
+#' obj <- ph(structure = "general", dimension = 3)
+#' moment(obj, 2)
 setMethod(
   "moment", signature(x = "ph"),
   function(x, k = 1) {
@@ -187,8 +187,7 @@ setMethod(
     if (methods::is(x, "iph")) {
       warning("moment of undelying ph structure is provided for iph objects")
     }
-    m <- solve(-x@pars$S)
-    prod <- matrix_power(k, m)
+    prod <- matrix_power(k, solve(-x@pars$S))
     return(factorial(k) * sum(x@pars$alpha %*% prod))
   }
 )
@@ -202,8 +201,8 @@ setMethod(
 #'
 #' @examples
 #' set.seed(123)
-#' ph1 <- ph(structure = "general", dimension = 3)
-#' mean(ph1)
+#' obj <- ph(structure = "general", dimension = 3)
+#' mean(obj)
 setMethod(
   "mean", signature(x = "ph"),
   function(x) {
@@ -224,8 +223,8 @@ setMethod(
 #'
 #' @examples
 #' set.seed(123)
-#' ph1 <- ph(structure = "general", dimension = 3)
-#' var(ph1)
+#' obj <- ph(structure = "general", dimension = 3)
+#' var(obj)
 setMethod(
   "var", signature(x = "ph"),
   function(x) {
@@ -249,11 +248,14 @@ setMethod(
 #'
 #' @examples
 #' set.seed(123)
-#' ph1 <- ph(structure = "general", dimension = 3)
-#' laplace(ph1, 3)
+#' obj <- ph(structure = "general", dimension = 3)
+#' laplace(obj, 3)
 setMethod(
   "laplace", signature(x = "ph"),
   function(x, r) {
+    if (methods::is(x, "iph")) {
+      warning("Laplace transform of undelying ph structure is provided for iph objects")
+    }
     lim <- max(Re(eigen(x@pars$S)$values))
     if (any(r <= lim)) {
       stop("r should be above the largest real eigenvalue of S")
@@ -274,11 +276,14 @@ setMethod(
 #'
 #' @examples
 #' set.seed(123)
-#' ph1 <- ph(structure = "general", dimension = 3)
-#' mgf(ph1, 0.4)
+#' obj <- ph(structure = "general", dimension = 3)
+#' mgf(obj, 0.4)
 setMethod(
   "mgf", signature(x = "ph"),
   function(x, r) {
+    if (methods::is(x, "iph")) {
+      warning("mgf of undelying ph structure is provided for iph objects")
+    }
     lim <- -max(Re(eigen(x@pars$S)$values))
     if (any(r > lim)) {
       stop("r should be below the negative largest real eigenvalue of S")
@@ -673,9 +678,11 @@ setMethod("LRT", c(x = "ph", y = "ph"), function(x, y) {
 setMethod("TVR", c(x = "ph"), function(x, rew) {
   if (length(x@pars$alpha) != length(rew)) {
     stop("vector of rewards of wrong dimension")
-  } else {
-    mar_par <- tvr_ph(x@pars$alpha, x@pars$S, rew)
-    x0 <- ph(alpha = mar_par[[1]], S = mar_par[[2]])
+  } 
+  if (any(rew < 0)) {
+    stop("vector of rewards with negative entries")
   }
+  mar_par <- tvr_ph(x@pars$alpha, x@pars$S, rew)
+  x0 <- ph(alpha = mar_par[[1]], S = mar_par[[2]])
   return(x0)
 })

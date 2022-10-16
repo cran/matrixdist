@@ -13,9 +13,14 @@
 }
 \value{
 A realization of independent and identically distributed inhomogeneous
- multivariate phase-type variables. If x is a M-o-E miph an array of dimension c(n,d,m) is returned,
+ multivariate phase-type variables. If x is a MoE miph an array of dimension c(n,d,m) is returned,
  with d the number of marginals and m the number of initial distribution vectors.
 }
 \description{
 Simulation Method for inhomogeneous multivariate phase-type distributions
+}
+\examples{
+under_mph <- mph(structure = c("general", "general"))
+obj <- miph(under_mph, gfun = c("weibull", "pareto"), gfun_pars = list(c(2), c(3)))
+sim(obj, 100)
 }

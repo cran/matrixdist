@@ -151,6 +151,39 @@ setMethod(
   }
 )
 
+#' Nfold Method for phase-type distributions
+#'
+#' @param x1 An object of class \linkS4class{ph}.
+#' @param x2 An object of class \linkS4class{dph}.
+#'
+#' @return An object of class \linkS4class{ph}.
+#' @export
+#'
+#' @examples
+#' dph1 <- dph(structure = "general", dimension = 3)
+#' dph2 <- dph(structure = "general", dimension = 2)
+#' ph0 <- ph(structure = "general", dimension = 2)
+#' Nfold(dph1, ph0)
+#' Nfold(dph1, dph2)
+setMethod(
+  "Nfold", signature(x1 = "dph"),
+  function(x1, x2) {
+    if (methods::is(x2, "ph")) {
+      exit_vect <- -x2@pars$S %*% rep(1, length(x2@pars$alpha))
+      alpha <- kronecker(x1@pars$alpha, x2@pars$alpha)
+      S <- kronecker(diag(length(x1@pars$alpha)), x2@pars$S) + kronecker(x1@pars$S, exit_vect %*% x2@pars$alpha)
+      return(ph(alpha = alpha, S = S))
+    } else if (methods::is(x2, "dph")) {
+      exit_vect <- rep(1, length(x2@pars$alpha)) - x2@pars$S %*% rep(1, length(x2@pars$alpha))
+      alpha <- kronecker(x1@pars$alpha, x2@pars$alpha)
+      S <- kronecker(diag(length(x1@pars$alpha)), x2@pars$S) + kronecker(x1@pars$S, exit_vect %*% x2@pars$alpha)
+      return(dph(alpha = alpha, S = S))
+    } else {
+      stop("wrong type of objects")
+    }
+  }
+)
+
 #' Show Method for discrete phase-type distributions
 #'
 #' @param object An object of class \linkS4class{dph}.
@@ -188,8 +221,8 @@ setMethod("coef", c(object = "dph"), function(object) {
 #'
 #' @examples
 #' set.seed(123)
-#' dph1 <- dph(structure = "general", dimension = 3)
-#' moment(dph1, 2)
+#' obj <- dph(structure = "general", dimension = 3)
+#' moment(obj, 2)
 setMethod(
   "moment", signature(x = "dph"),
   function(x, k = 1) {
@@ -214,8 +247,8 @@ setMethod(
 #'
 #' @examples
 #' set.seed(123)
-#' dph1 <- dph(structure = "general", dimension = 3)
-#' mean(dph1)
+#' obj <- dph(structure = "general", dimension = 3)
+#' mean(obj)
 setMethod(
   "mean", signature(x = "dph"),
   function(x) {
@@ -233,8 +266,8 @@ setMethod(
 #'
 #' @examples
 #' set.seed(123)
-#' dph1 <- dph(structure = "general", dimension = 3)
-#' var(dph1)
+#' obj <- dph(structure = "general", dimension = 3)
+#' var(obj)
 setMethod(
   "var", signature(x = "dph"),
   function(x) {
@@ -251,14 +284,14 @@ setMethod(
 #' @param x An object of class \linkS4class{dph}.
 #' @param z A vector of real values.
 #'
-#' @return The probability generating of the \linkS4class{dph} object at the 
+#' @return The probability generating of the \linkS4class{dph} object at the
 #'  given locations.
 #' @export
 #'
 #' @examples
 #' set.seed(123)
-#' dph1 <- dph(structure = "general", dimension = 3)
-#' pgf(dph1, 0.5)
+#' obj <- dph(structure = "general", dimension = 3)
+#' pgf(obj, 0.5)
 setMethod(
   "pgf", signature(x = "dph"),
   function(x, z) {
@@ -334,6 +367,61 @@ setMethod("cdf", c(x = "dph"), function(x,
   cdf[q_inf] <- as.numeric(1 * lower.tail)
   return(cdf)
 })
+
+#' TVR Method for dph Class
+#'
+#' @param x An object of class \linkS4class{dph}.
+#' @param rew A vector of rewards.
+#'
+#' @return An object of the of class \linkS4class{dph}.
+#' @export
+#'
+#' @examples
+#' obj <- dph(structure = "general")
+#' TVR(obj, c(1, 0, 1))
+setMethod("TVR", c(x = "dph"), function(x, rew) {
+  if (length(x@pars$alpha) != length(rew)) {
+    stop("vector of rewards of wrong dimension")
+  }
+  if (any((rew %% 1) != 0) | any(rew < 0)) {
+    stop("vector of rewards must contain only non-negative integeras")
+  }
+  alpha_copy <- x@pars$alpha
+  S_copy <- x@pars$S
+
+  mat_sizes <- rew + (rew == 0)
+
+  rew_tilde <- NULL
+  alpha_tilde <- NULL
+  S_tilde <- NULL
+  for (i in 1:length(rew)) {
+    S_row <- NULL
+    for (j in 1:length(rew)) {
+      mat_aux <- matrix(0, nrow = mat_sizes[i], ncol = mat_sizes[j])
+      if (i == j) {
+        mat_aux[-mat_sizes[i], -1] <- diag(1, mat_sizes[i] - 1)
+      }
+      mat_aux[mat_sizes[i], 1] <- S_copy[i, j]
+      S_row <- cbind(S_row, mat_aux)
+    }
+    S_tilde <- rbind(S_tilde, S_row)
+
+    alpha_aux <- rep(0, mat_sizes[i])
+    alpha_aux[1] <- alpha_copy[i]
+    alpha_tilde <- c(alpha_tilde, alpha_aux)
+
+    if (rew[i] != 0) {
+      rew_tilde <- c(rew_tilde, rep(1, rew[i]))
+    } else {
+      rew_tilde <- c(rew_tilde, 0)
+    }
+  }
+
+  mar_par <- tvr_dph(alpha_tilde, S_tilde, rew_tilde)
+  x0 <- dph(alpha = mar_par[[1]], S = mar_par[[2]])
+  return(x0)
+})
+
 
 #' Fit Method for dph Class
 #'

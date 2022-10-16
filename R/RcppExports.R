@@ -1063,6 +1063,23 @@ rMPHstar <- function(n, alpha, S, R) {
     .Call(`_matrixdist_rMPHstar`, n, alpha, S, R)
 }
 
+#' Simulate a MIPH* random vector
+#'
+#' Generates a sample of size \code{n} from a MIPH* distribution with parameters
+#'  \code{alpha}, \code{S} and \code{R}.
+#'
+#' @param n Sample size.
+#' @param alpha Initial probabilities.
+#' @param S Sub-intensity matrix.
+#' @param R Reward matrix.
+#' @param gfun Vector with transformations names.
+#' @param gfun_par List with transformations parameters.
+#' @return The simulated sample.
+#' 
+rMIPHstar <- function(n, alpha, S, R, gfun, gfun_par) {
+    .Call(`_matrixdist_rMIPHstar`, n, alpha, S, R, gfun, gfun_par)
+}
+
 #' Simulate discrete phase-type
 #'
 #' Generates a sample of size \code{n} from a discrete phase-type distribution with
@@ -1827,6 +1844,18 @@ plus_states <- function(R) {
 #'
 tvr_ph <- function(alpha, S, R) {
     .Call(`_matrixdist_tvr_ph`, alpha, S, R)
+}
+
+#' Performs TVR for discrete phase-type distributions
+#'
+#' @param alpha Initial distribution vector.
+#' @param S Sub-intensity matrix.
+#' @param R Reward vector.
+#'
+#' @return A list of PH parameters.
+#' 
+tvr_dph <- function(alpha, S, R) {
+    .Call(`_matrixdist_tvr_dph`, alpha, S, R)
 }
 
 #' Computes PH parameters of a linear combination of vector from MPHstar

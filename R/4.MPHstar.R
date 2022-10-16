@@ -26,6 +26,8 @@ setClass("MPHstar",
 #' @return An object of class \linkS4class{MPHstar}.
 #' @export
 #'
+#' @examples
+#' MPHstar(structure = "general", dimension = 4, variables = 3)
 MPHstar <- function(alpha = NULL,
                     S = NULL,
                     structure = NULL,
@@ -93,6 +95,9 @@ setMethod("show", "MPHstar", function(object) {
 #' @return A matrix of sample data for each marginal.
 #' @export
 #'
+#' @examples
+#' obj <- MPHstar(structure = "general")
+#' sim(obj, 100)
 setMethod("sim", c(x = "MPHstar"), function(x, n = 1000) {
   U <- rMPHstar(n, x@pars$alpha, x@pars$S, x@pars$R)
   return(U)
@@ -109,6 +114,9 @@ setMethod("sim", c(x = "MPHstar"), function(x, n = 1000) {
 #' obj <- MPHstar(structure = "general")
 #' marginal(obj, 1)
 setMethod("marginal", c(x = "MPHstar"), function(x, mar = 1) {
+  if (!(mar %in% 1:ncol(x@pars$R))) {
+    stop("maringal provided not available")
+  }
   mar_par <- tvr_ph(x@pars$alpha, x@pars$S, x@pars$R[, mar])
   x0 <- ph(alpha = mar_par[[1]], S = mar_par[[2]])
   return(x0)
@@ -140,6 +148,72 @@ setMethod("linCom", c(x = "MPHstar"), function(x, w) {
   return(x0)
 })
 
+#' Mean Method for MPHstar class
+#'
+#' @param x An object of class \linkS4class{MPHstar}.
+#'
+#' @return The mean of MPHstar distribution.
+#' @export
+#'
+#' @examples
+#' obj <- MPHstar(structure = "general")
+#' mean(obj)
+setMethod("mean", c(x = "MPHstar"), function(x) {
+  d <- ncol(x@pars$R)
+  res <- rep(0, d)
+  for (i in 1:d) {
+    res[i] <- mean(marginal(x, i))
+  }
+  return(res)
+})
+
+#' Var Method for MPHstar class
+#'
+#' @param x An object of class \linkS4class{MPHstar}.
+#'
+#' @return The covariance matrix of the MPHstar distribution.
+#' @export
+#'
+#' @examples
+#' obj <- MPHstar(structure = "general")
+#' var(obj)
+setMethod("var", c(x = "MPHstar"), function(x) {
+  alpha <- x@pars$alpha
+  U <- solve(-x@pars$S)
+  R <- x@pars$R
+  d <- ncol(R)
+  
+  res <- matrix(0, d, d)
+  for (i in 1:d) {
+    mar1 <- marginal(x, i)
+    for (j in i:d) {
+      if (j == i) {
+        res[i, j] <- var(mar1)
+      } else {
+        mar2 <- marginal(x, j)
+        cross <- alpha %*% U %*% diag(R[, i]) %*% U %*% R[, j] + alpha %*% U %*% diag(R[, j]) %*% U %*% R[, i]
+        res[i, j] <- cross - mean(mar1) * mean(mar2)
+      }
+    }
+  }
+  res[lower.tri(res)] <- t(res)[lower.tri(res)]
+  return(res)
+})
+
+#' Cor Method for MPHstar class
+#'
+#' @param x An object of class \linkS4class{MPHstar}.
+#'
+#' @return The correlation matrix of the MPHstar distribution.
+#' @export
+#'
+#' @examples
+#' obj <- MPHstar(structure = "general")
+#' cor(obj)
+setMethod("cor", c(x = "MPHstar"), function(x) {
+  stats::cov2cor(var(x))
+})
+
 #' Find weight of observations
 #'
 #' @param x A vector of observations from which we want to know their weights.
@@ -165,7 +239,8 @@ find_weight <- function(x) {
 #' @param y A matrix with marginal observations, each column corresponds to a marginal.
 #' @param w A matrix of weights, each column corresponds to a marginal.
 #'
-#' @return For summed and marginal observations we have a list with matrices of unique observations and their associated weights, separated by uncensored and right-censored data.
+#' @return For summed and marginal observations we have a list with matrices of
+#'  unique observations and their associated weights, separated by uncensored and right-censored data.
 #' @export
 #'
 MPHstar_data_aggregation <- function(y, w = numeric(0)) {
@@ -213,6 +288,11 @@ MPHstar_data_aggregation <- function(y, w = numeric(0)) {
 #'
 #' @export
 #'
+#' @examples
+#' set.seed(123)
+#' obj <- MPHstar(structure = "general")
+#' data <- sim(obj, 100)
+#' fit(obj, data, stepsEM = 20)
 setMethod(
   "fit", c(x = "MPHstar", y = "ANY"),
   function(x,
