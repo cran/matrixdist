@@ -1,6 +1,6 @@
-d8ba01d8a8293120365a0bda440e4787 *DESCRIPTION
+e2e2a1b5e1adee7bfa3633537ade63cc *DESCRIPTION
 5d3320c5506104202a93e2c385f76ebb *NAMESPACE
-c38a11aef647f3f5ec31f96f0aec59f7 *NEWS.md
+d0d4e0070a3616e45a5c486ba1a460e3 *NEWS.md
 c5504d8570f898e2eb7a8555d221268f *R/0.generics.R
 41cedf36b2ffe63738b4ace3d5f16de1 *R/1.ph.R
 6360ff893d1e6077d2c3d4a4414a2b9c *R/2.iph.R
@@ -11,11 +11,11 @@ c5504d8570f898e2eb7a8555d221268f *R/0.generics.R
 d5842be64dac7b21be8282e0459e6bbb *R/4.MPHstar.R
 51afb1ed2e7718f39f6f02f0558d7d48 *R/4b.bivph.R
 5837a77a59a2b1b857a3b261a0a54ed9 *R/4c.biviph.R
-67905522975e2cfccde904d497ba0dd9 *R/5.phMoE.R
+14c87d00dbb5772977470947d3ed9eb5 *R/5.phMoE.R
 f9fca68be41124a82443e53e317adc7e *R/6.sph.R
-08d25e30af1750a48f134786def9f43d *R/7.dph.R
+5eea507eb202629d8ac7a8babf9f3b38 *R/7.dph.R
 04599408e9ac68ba02fcd1eae31804be *R/8.bivdph.R
-fa7aaa1809abfa05290872a7f9bdc237 *R/9.mdph.R
+86691638e9e7c68ea3938ae2e457b042 *R/9.mdph.R
 8154f6109fa63190d2a34c957feef649 *R/RcppExports.R
 a5472cd9c40affb90bd6ad43eec6d16f *R/matrixdist-package.R
 a659d2257571af0b9e716ac2afa06cd4 *README.md
@@ -40,8 +40,8 @@ a674e8434cf21407c1ddbbfbf751aa0a *man/MPHstar-class.Rd
 136fe0cba8e83cbf4ee34405b3848291 *man/MPHstar_EMstep_UNI.Rd
 a16112dd6389aa4326cb4692324e05d1 *man/MPHstar_data_aggregation.Rd
 db2582030ddb6eca38a0f258be47a11d *man/MoE-bivdph-method.Rd
-68272aff690153750a1d47d259cc5fd4 *man/MoE-dph-method.Rd
-3c641943ef946a6ddd17727678091d8d *man/MoE-mdph-method.Rd
+716d7a003567692021003e254674a37b *man/MoE-dph-method.Rd
+535c68aa0076fb007bab8de304a76f96 *man/MoE-mdph-method.Rd
 00f5c5d4267790f3bfd3748a966e7f06 *man/MoE-mph-method.Rd
 e51a180fb697151785ea16e628fc6df2 *man/MoE-ph-method.Rd
 f11adfef2aa54cc097a32dd94e4aff66 *man/MoE.Rd

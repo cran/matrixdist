@@ -48,17 +48,31 @@ setMethod(
         reltol = reltol
       )
     }
-    inh <- !is.null(inhom)
+    # inh <- !is.null(inhom)
+    # if (inh) {
+    #   g_inv <- inhom$g_inv
+    #   lambda <- inhom$lambda
+    #   theta <- inhom$theta
+    #   mLL <- function(theta, g_inv, lambda, alpha1, alpha2, S, y, w, yc, wc) {
+    #     return(-logLikelihoodPH_MoE(alpha1, alpha2, S, g_inv(theta, y), w, g_inv(theta, yc), wc) -
+    #       sum(w * log(lambda(theta, y))))
+    #   }
+    # }
+    
+    #Alaric suggestion
+    inh <- methods::is(x,"iph")
     if (inh) {
-      g_inv <- inhom$g_inv
-      lambda <- inhom$lambda
-      theta <- inhom$theta
+      g_inv <- x@gfun$inverse
+      lambda <- x@gfun$intensity
+      theta <- x@gfun$pars
       mLL <- function(theta, g_inv, lambda, alpha1, alpha2, S, y, w, yc, wc) {
-        return(-logLikelihoodPH_MoE(alpha1, alpha2, S, g_inv(y, theta), w, g_inv(yc, theta), wc) -
-          sum(w * log(lambda(y, theta))))
+        return(-logLikelihoodPH_MoE(alpha1, alpha2, S, g_inv(theta, y), w, g_inv(theta, yc), wc) -
+                 sum(w * log(lambda(theta, y))))
       }
     }
     p <- length(x@pars$alpha)
+    if(p<=2)stop("The smallest ph dimension supported by multinomial regressions is 3")
+    
     frame <- stats::model.frame(formula, data = data)
     n <- nrow(frame)
     d <- ncol(frame) - 1
@@ -75,7 +89,7 @@ setMethod(
     names(ndm) <- names(dm)[-1]
     for (k in 1:stepsEM) {
       if (inh) {
-        B_matrix_aux <- EMstep_MoE_PADE(rbind(alpha_vecs[delta == 1, ], alpha_vecs[delta == 0, ]), S_fit, g_inv(x = frame[delta == 1, 1], theta = theta), weight[delta == 1], g_inv(x = frame[delta == 0, 1], theta = theta), weight[delta == 0])
+        B_matrix_aux <- EMstep_MoE_PADE(rbind(alpha_vecs[delta == 1, ], alpha_vecs[delta == 0, ]), S_fit, g_inv(beta = theta, t= frame[delta == 1, 1] ), weight[delta == 1], g_inv(beta = theta, t = frame[delta == 0, 1]), weight[delta == 0])
         B_matrix <- B_matrix_aux[[1]]
         wt <- reshape2::melt(B_matrix)[, 3]
         wt[wt < 1e-22] <- wt[wt < 1e-22] + 1e-22
@@ -148,7 +162,11 @@ setMethod(
         }
       }
     }
-    if (inh) inhom$theta <- theta
+    # if (inh) inhom$theta <- theta
+    if(inh){
+      inhom <- x@gfun
+      inhom$pars <- theta
+    }
     cat("\n", sep = "")
     list(alpha = alpha_vecs, S = S_fit, mm = multinom_model, inhom = inhom)
   }
